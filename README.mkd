@@ -1,0 +1,2 @@
+# chef-ruby
+a chef recipe to setup a web server for your ruby application
