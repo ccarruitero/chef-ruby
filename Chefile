@@ -1,0 +1,10 @@
+site 'https://supermarket.getchef.com/api/v1'
+
+cookbook 'apt'
+cookbook 'nginx'
+cookbook 'postgresql'
+cookbook 'redis'
+cookbook 'postfix'
+cookbook 'sudo'
+cookbook 'rvm'
+cookbook 'puma'

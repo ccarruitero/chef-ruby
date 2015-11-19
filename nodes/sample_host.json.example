@@ -1,0 +1,60 @@
+{
+  "run_lists": [
+    "recipe[apt]",
+    "recipe[sudo]",
+    "recipe[postgresql::server]",
+    "recipe[postgresql::contrib]",
+    "recipe[postgresql::libpq]",
+    "recipe[nginx::server]",
+    "recipe[rvm::user]",
+    "recipe[redis::server]",
+    "recipe[puma]"
+  ],
+
+  "authorization": {
+    "sudo": {
+      "groups"      : ["sudo","admin"],
+      "users"       : ["deploy"],
+      "passwordless": true
+    }
+  },
+
+  "postgresql": {
+    "shared_buffers": "256MB", // 1/4 of total memory is recommended
+    "shared_preload_libraries": "pg_stat_statements",
+    "users": [
+      {
+        "username": "deploy",
+        "password": "123456",
+        "superuser": true,
+        "login": true
+      }
+    ]
+  },
+
+  // Nginx default values configuration.
+  // Also you can specify your default site configuration.
+  "nginx": {
+    "user"                : "deploy",
+    "client_max_body_size": "2m",
+    "worker_processes"    : "auto",
+    "worker_connections"  : 768,
+    "repository"          : "ppa",
+    "site"                : {
+      "host"           : "<myhostname>",
+      "upstream_ports" : ["5000"],
+      "ip"             : "0.0.0.0",
+      "listen"         : "80"
+    }
+  },
+
+  // The default ruby version and gemset you’re going to use and rvm user.
+  "rvm" : {
+    "user_installs": [
+      {
+        "user"         : "deploy",
+        "default_ruby" : "<ruby-version>@<gemset>"
+      }
+    ]
+  },
+}
